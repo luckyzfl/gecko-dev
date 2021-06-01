@@ -38,8 +38,11 @@
 #endif
 
 #ifdef LIBFUZZER
-#  include "FuzzerDefs.h"
+// #  include "FuzzerDefs.h"
 #endif
+
+typedef int (*HFTestingFunc)(const uint8_t*, size_t);
+extern "C" int HonggfuzzMain(int *argc, char*** argv, HFTestingFunc myHFTestingFunc);
 
 int main(int argc, char** argv, char** envp) {
 #ifdef MOZ_WIDGET_GTK
@@ -79,8 +82,13 @@ int main(int argc, char** argv, char** envp) {
 
   mozilla::Bootstrap::UniquePtr bootstrap = bootstrapResult.unwrap();
 
+// #ifdef LIBFUZZER
+//   shellData.fuzzerDriver = fuzzer::FuzzerDriver;
+// #endif
+
+
 #ifdef LIBFUZZER
-  shellData.fuzzerDriver = fuzzer::FuzzerDriver;
+  shellData.fuzzerDriver = HonggfuzzMain;
 #endif
 
   int result = bootstrap->XRE_XPCShellMain(argc, argv, envp, &shellData);

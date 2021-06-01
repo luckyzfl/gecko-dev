@@ -13,7 +13,7 @@
 #include <fstream>
 
 #ifdef LIBFUZZER
-#  include "FuzzerExtFunctions.h"
+// #  include "FuzzerExtFunctions.h"
 #endif
 
 #include "FuzzerRegistry.h"

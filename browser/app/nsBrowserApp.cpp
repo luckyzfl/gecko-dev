@@ -24,6 +24,8 @@
 
 #include "nsCOMPtr.h"
 
+
+
 #ifdef XP_WIN
 #  include "freestanding/SharedSection.h"
 #  include "LauncherProcessWin.h"
@@ -50,6 +52,10 @@
 #ifdef MOZ_LINUX_32_SSE2_STARTUP_ERROR
 #  include <cpuid.h>
 #  include "mozilla/Unused.h"
+
+
+
+
 
 static bool IsSSE2Available() {
   // The rest of the app has been compiled to assume that SSE2 is present
@@ -150,6 +156,10 @@ static bool IsArg(const char* arg, const char* s) {
 
 Bootstrap::UniquePtr gBootstrap;
 
+
+typedef int (*HFTestingFunc)(const uint8_t*, size_t);
+extern "C" int HonggfuzzMain(int *argc, char*** argv, HFTestingFunc myHFTestingFunc);
+
 static int do_main(int argc, char* argv[], char* envp[]) {
   // Allow firefox.exe to launch XULRunner apps via -app <application.ini>
   // Note that -app must be the *first* argument.
@@ -182,7 +192,8 @@ static int do_main(int argc, char* argv[], char* envp[]) {
 #endif
 
 #ifdef LIBFUZZER
-    shellData.fuzzerDriver = fuzzer::FuzzerDriver;
+    // shellData.fuzzerDriver = fuzzer::FuzzerDriver;
+    shellData.fuzzerDriver = HonggfuzzMain;
 #endif
 
     return gBootstrap->XRE_XPCShellMain(--argc, argv, envp, &shellData);
@@ -214,7 +225,8 @@ static int do_main(int argc, char* argv[], char* envp[]) {
 
 #ifdef LIBFUZZER
   if (getenv("FUZZER"))
-    gBootstrap->XRE_LibFuzzerSetDriver(fuzzer::FuzzerDriver);
+    // gBootstrap->XRE_LibFuzzerSetDriver(fuzzer::FuzzerDriver);
+    gBootstrap->XRE_LibFuzzerSetDriver(HonggfuzzMain);
 #endif
 
   // Note: keep in sync with LauncherProcessWin.

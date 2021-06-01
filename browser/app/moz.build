@@ -54,7 +54,6 @@ LOCAL_INCLUDES += [
 ]
 
 if CONFIG["LIBFUZZER"]:
-    USE_LIBS += ["fuzzer"]
     LOCAL_INCLUDES += [
         "/tools/fuzzing/libfuzzer",
     ]
