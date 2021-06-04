@@ -21,7 +21,8 @@ XPCSHELL_TESTS_MANIFESTS += [
     "test/unit/xpcshell-parent-process.ini",
 ]
 
-TEST_DIRS += ["test/gtest"]
+TEST_DIRS += [
+]
 
 EXPORTS.mozilla.dom += [
     "FileInfoFwd.h",
