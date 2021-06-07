@@ -25,7 +25,7 @@
 using std::exception;
 #endif
 #if defined(__GLIBCXX__)
-namespace std { class type_info; } // WORKAROUND: http://llvm.org/bugs/show_bug.cgi?id=13364
+//namespace std { class type_info; } // WORKAROUND: http://llvm.org/bugs/show_bug.cgi?id=13364
 #endif
 #include <typeinfo>  // for 'typeid' to work
 
