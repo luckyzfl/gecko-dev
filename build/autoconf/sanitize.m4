@@ -71,7 +71,8 @@ dnl ========================================================
 if test -n "$MOZ_UBSAN_CHECKS"; then
     MOZ_UBSAN=1
     UBSAN_TXT="$_objdir/ubsan_blacklist.txt"
-    cat $_topsrcdir/build/sanitizers/ubsan_*_blacklist.txt > $UBSAN_TXT
+    cat $_topsrcdir/blocklist.list > $UBSAN_TXT
+    cat $_topsrcdir/build/sanitizers/ubsan_*_blacklist.txt >> $UBSAN_TXT
     UBSAN_FLAGS="-fsanitize=$MOZ_UBSAN_CHECKS -fno-sanitize-recover=$MOZ_UBSAN_CHECKS -fsanitize-blacklist=$UBSAN_TXT"
     CFLAGS="$UBSAN_FLAGS $CFLAGS"
     CXXFLAGS="$UBSAN_FLAGS $CXXFLAGS"
