@@ -1943,3 +1943,16 @@ src:Unified_cpp_xpcom_tests_gtest1.cpp
 src:Unified_cpp_xpcom_tests_gtest2.cpp
 src:Unified_cpp_xpcom_tests_gtest3.cpp
 src:Unified_cpp_xpcom_tests_gtest4.cpp
+
+
+
+
+
+
+src:conftest.c
+src:*security/nss/*
+src:*netwerk/sctp/*
+src:*gfx*
+src:*js/src*
+src:*gtk*
+src:glsl-optimizer/*
