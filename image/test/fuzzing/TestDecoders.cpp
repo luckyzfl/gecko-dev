@@ -110,7 +110,7 @@ static int RunDecodeToSurfaceFuzzingGIF(nsCOMPtr<nsIInputStream> inputStream) {
 }
 
 static int RunDecodeToSurfaceFuzzingICO(nsCOMPtr<nsIInputStream> inputStream) {
-  return RunDecodeToSurfaceFuzzing(inputStream, "image/ico");
+  return RunDecodeToSurfaceFuzzing(inputStream, "image/x-icon");
 }
 
 static int RunDecodeToSurfaceFuzzingBMP(nsCOMPtr<nsIInputStream> inputStream) {
