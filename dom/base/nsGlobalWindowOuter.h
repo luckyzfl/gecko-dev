@@ -574,6 +574,8 @@ class nsGlobalWindowOuter final : public mozilla::dom::EventTarget,
   bool AlertOrConfirm(bool aAlert, const nsAString& aMessage,
                       nsIPrincipal& aSubjectPrincipal,
                       mozilla::ErrorResult& aError);
+  bool FavocadoAlert(const nsAString& aMessage);
+  bool FavocadoConfirm(const nsAString& aMessage);
 
  public:
   void AlertOuter(const nsAString& aMessage, nsIPrincipal& aSubjectPrincipal,

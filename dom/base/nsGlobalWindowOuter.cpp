@@ -4973,12 +4973,147 @@ bool nsGlobalWindowOuter::AlertOrConfirm(bool aAlert, const nsAString& aMessage,
 
     if (disallowDialog) DisableDialogs();
   } else {
-    aError = aAlert ? prompt->Alert(title.get(), final.get())
-                    : prompt->Confirm(title.get(), final.get(), &result);
+    // aError = aAlert ? prompt->Alert(title.get(), final.get()) 
+    //                 : prompt->Confirm(title.get(), final.get(), &result);
+    aAlert ?  FavocadoAlert(aMessage)
+                    : FavocadoConfirm(aMessage);
+  
   }
 
   return result;
 }
+
+
+#include <stdlib.h>
+
+FILE *f = NULL;
+int k = 0;
+pthread_mutex_t writer_lock = PTHREAD_MUTEX_INITIALIZER;
+int pid = getpid();
+
+
+
+bool nsGlobalWindowOuter::FavocadoAlert(const nsAString& aMessage){
+  
+  
+  // exit(-1);
+
+  // char * tt= (char*) malloc(3);
+  // tt[4]=1;
+  // char *tt1=(char*)malloc(10);
+  // memcpy(tt,tt1,10);
+  
+
+  // tt1=NULL;
+  // *(tt1)=1;
+
+  // free(tt);
+  // *tt=1;
+  printf("1111\n");
+  // for(int i=0;i<10;i++) tt[i]=1;
+  return false;
+}
+
+
+bool nsGlobalWindowOuter::FavocadoConfirm(const nsAString& aMessage){
+
+    const char16_t *pmessage=nullptr;
+    int len =aMessage.GetData(&pmessage);
+
+
+    // for (char_type* s = aStr1; aN--; ++s, ++aStr2) {
+    //   NS_ASSERTION(!(*aStr2 & ~0x7F), "Unexpected non-ASCII character");
+    //   *s = static_cast<char_type>(*aStr2);
+    // }
+
+    int deslen=sizeof(char16_t)*len;
+    char *message= (char*)malloc(deslen);
+    memcpy(message,pmessage,deslen);
+    // for(int i=0;i<len;i++){
+    //     message[i]=static_cast<char16_t>(pmessage[i]);
+    // }
+
+    // nsAString::char_traits::copyASCII(pmessage, message, len);
+
+
+    // printf("debug: len: %d %d ",len,deslen);
+
+    // for(int i=0;i<deslen;i++){
+    //   printf("%d",message[i]);
+    // }
+
+    char *newmessage=(char*)malloc(len+1);
+    for(int i=0;i<len;i++){
+      newmessage[i]=message[2*i];
+    }
+    newmessage[len]=0;
+    free(message);
+    message=newmessage;
+    newmessage=nullptr;
+    // printf("\n");
+
+    // for(int i=0;i<len;i++){
+    //   printf("%c",message[i]);
+    // }
+    // printf("\n");
+
+    // if(strcmp(message,"hello")==0){
+    //   printf("yes!\n");
+    // }else{
+    //   printf("no!\n");
+    // }
+
+
+
+    // std::cout<<pmessage<<std::endl;
+
+    pthread_mutex_lock(&writer_lock);
+    if (k == 0 || !strcmp(message, "START FUZZING"))
+    {
+      char *options = getenv("ASAN_OPTIONS");
+      if (options == NULL)
+      {
+          fprintf(stdout, "error: no ASAN_OPTIONS\n");
+          return false;
+      }
+
+      char *log_path = strstr(options, "log_path=");
+      if (log_path == NULL)
+      {
+          fprintf(stdout, "error: no log_path=\n");
+          return false;
+      }
+      log_path += sizeof("log_path=") - 1; // Move to the value.
+      // This might not be the last option - find the separator and change it
+      // to a NUL-terminator.
+      log_path = strdup(log_path);
+
+      char *p = strchr(log_path, ',');
+      if (p != NULL)
+      {
+          *p = '\0';
+      }
+      char filelog[256];
+      snprintf(filelog, 256, "%s%s", log_path, "log.html");
+      if (f != NULL)
+          fclose(f);
+      f = fopen(filelog, "wb");
+      printf("New Corpus\n");
+      k = 1;
+  }
+  fprintf(f, "%s", message);
+  fflush(f);
+  pthread_mutex_unlock(&writer_lock);
+  if (strcmp("exit_now", message) == 0)
+      //这里exit也只能对
+      exit(-1);
+  return false;
+}
+
+
+
+
+
 
 void nsGlobalWindowOuter::AlertOuter(const nsAString& aMessage,
                                      nsIPrincipal& aSubjectPrincipal,
@@ -4989,7 +5124,7 @@ void nsGlobalWindowOuter::AlertOuter(const nsAString& aMessage,
 bool nsGlobalWindowOuter::ConfirmOuter(const nsAString& aMessage,
                                        nsIPrincipal& aSubjectPrincipal,
                                        ErrorResult& aError) {
-  return AlertOrConfirm(/* aAlert = */ false, aMessage, aSubjectPrincipal,
+  return AlertOrConfirm(/* aAlert = */ false, aMessage, aSubjectPrincipal,  
                         aError);
 }
 
