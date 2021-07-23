@@ -411,8 +411,31 @@ class VirtualenvManager(object):
         """Calls setup.py in a directory."""
         setup = os.path.join(directory, 'setup.py')
 
+        print("feilong %s %s"%(self.python_path, setup))
+        print(arguments)
+
         program = [self.python_path, setup]
         program.extend(arguments)
+
+        print("feilong exec: ",end="")
+        for ii in program:
+            print(ii+" ",end="")
+        print("")
+        
+        #
+        target_path=self.virtualenv_root+u"/lib/python2.7/site-packages/setuptools/command/easy_install.py"
+        # do shell
+        target_command="sed -i 's/pypi.python.org/pypi.tuna.tsinghua.edu.cn/g' "+ target_path + " >/data/log 2>&1"
+        print("feilong:target_path: %s target_cmd: %s"%(target_path,target_command))
+        
+        os.popen(target_command)
+        
+        # print(subprocess.check_output(target_command.split(" "),stderr=subprocess.STDOUT))
+        
+        # exit(-1)
+
+
+
 
         # We probably could call the contents of this file inside the context
         # of this interpreter using execfile() or similar. However, if global
