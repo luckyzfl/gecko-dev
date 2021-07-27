@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <iostream>
 
 #include "ImageContainer.h"
 #include <string.h>                     // for memcpy, memset
@@ -501,7 +502,8 @@ RecyclingPlanarYCbCrImage::CopyData(const Data& aData)
   // update buffer size
   size_t size = mData.mCbCrStride * mData.mCbCrSize.height * 2 +
                 mData.mYStride * mData.mYSize.height;
-
+  std::cout<<" mData.mCbCrStride: "<<mData.mCbCrStride<<" mData.mCbCrSize.height: "<<mData.mCbCrSize.height<<" mData.mYStride: "<<mData.mYStride<<" mData.mYSize.height: " << mData.mYSize.height
+    <<" size: "<<size<<std::endl;
   // get new buffer
   mBuffer = AllocateBuffer(size);
   if (!mBuffer)
