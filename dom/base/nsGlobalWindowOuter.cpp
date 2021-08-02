@@ -4,6 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "nsJSEnvironment.h"
+#include "js/GCAPI.h"
+
 #include "mozilla/Assertions.h"
 #include "mozilla/ScopeExit.h"
 #include "nsGlobalWindow.h"
@@ -4994,8 +4997,17 @@ int pid = getpid();
 
 
 bool nsGlobalWindowOuter::FavocadoAlert(const nsAString& aMessage){
-  
-  
+
+  // 调用 FuzzingFunctions GarbageCollect 和 CycleCollect
+  // FuzzingFunctions.garbageCollect();FuzzingFunctions.cycleCollect();
+
+  nsJSContext::GarbageCollectNow(JS::GCReason::COMPONENT_UTILS,
+                                nsJSContext::NonIncrementalGC,
+                                nsJSContext::NonShrinkingGC);
+
+  nsJSContext::CycleCollectNow();
+
+  printf("garbage collect success!\n");
   // exit(-1);
 
   // char * tt= (char*) malloc(3);
@@ -5009,7 +5021,7 @@ bool nsGlobalWindowOuter::FavocadoAlert(const nsAString& aMessage){
 
   // free(tt);
   // *tt=1;
-  printf("1111\n");
+  // printf("1111\n");
   // for(int i=0;i<10;i++) tt[i]=1;
   return false;
 }
