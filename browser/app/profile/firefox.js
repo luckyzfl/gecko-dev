@@ -21,6 +21,7 @@
 #endif
 #endif
 
+user_pref("fuzzing.enabled",true);
 pref("browser.chromeURL","chrome://browser/content/");
 pref("browser.hiddenWindowChromeURL", "chrome://browser/content/hiddenWindow.xul");
 

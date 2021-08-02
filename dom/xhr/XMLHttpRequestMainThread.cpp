@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include<iostream>
 #include "XMLHttpRequestMainThread.h"
 
 #include <algorithm>
@@ -1391,6 +1392,7 @@ XMLHttpRequestMainThread::DispatchProgressEvent(DOMEventTargetHelper* aTarget,
     aTotal = -1;
   }
 
+  // std::cout<<(aType == ProgressEventType::progress?"in if":"out if")<<std::endl;
   if (aType == ProgressEventType::progress) {
     mInLoadProgressEvent = true;
   }

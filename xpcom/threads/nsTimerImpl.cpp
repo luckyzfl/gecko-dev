@@ -3,7 +3,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
+#include <iostream>
 #include "nsTimerImpl.h"
 #include "TimerThread.h"
 #include "nsAutoPtr.h"
@@ -511,6 +511,7 @@ nsTimerImpl::Fire(int32_t aGeneration)
   }
 
   mCallbackDuringFire.swap(trash);
+  // std::cout<<"feilong: callback has been swaped"<<std::endl;
 
   MOZ_LOG(GetTimerLog(), LogLevel::Debug,
          ("[this=%p] Took %fms to fire timer callback\n",
